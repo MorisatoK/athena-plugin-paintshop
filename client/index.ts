@@ -1,10 +1,9 @@
 import * as alt from 'alt-client';
 import * as native from 'natives';
-import { WebViewController } from '../../../client/extensions/view2';
-import ViewModel from '../../../client/models/viewModel';
-import { CinematicCam } from '../../../client/utility/cinematic';
-import { isAnyMenuOpen } from '../../../client/utility/menus';
-import { Vector3 } from '../../../shared/interfaces/vector';
+import { WebViewController } from '@AthenaClient/extensions/view2';
+import ViewModel from '@AthenaClient/models/viewModel';
+import { CinematicCam } from '@AthenaClient/utility/cinematic';
+import { isAnyMenuOpen } from '@AthenaClient/utility/menus';
 import { Paintshop_View_Events } from '../shared/events';
 import { iPaintshopSync } from '../shared/interfaces';
 
@@ -174,7 +173,7 @@ class InternalFunctions implements ViewModel {
         }
     }
 
-    static generateCameraPoints(): Array<Vector3> {
+    static generateCameraPoints(): Array<alt.IVector3> {
         const cameraPoints = [];
         const zPos = alt.Player.local.pos.z;
 

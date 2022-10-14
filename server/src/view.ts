@@ -1,10 +1,4 @@
 import * as alt from 'alt-server';
-import { RGB } from '../../../../shared/interfaces/rgb';
-import { PolygonShape } from '../../../../server/extensions/extColshape';
-import VehicleFuncs from '../../../../server/extensions/vehicleFuncs';
-import { sha256Random } from '../../../../server/utility/encryption';
-import { RGBA } from 'alt-shared';
-import { VehicleEvents } from '../../../../server/events/vehicleEvents';
 import { ATHENA_EVENTS_VEHICLE } from '../../../../shared/enums/athenaEvents';
 import { Paintshop_View_Events } from '../../shared/events';
 import { IPaintShop, iPaintshopSync } from '../../shared/interfaces';
@@ -13,6 +7,7 @@ import { PAINT_SHOPS } from './shops';
 import { ServerBlipController } from '../../../../server/systems/blip';
 import { Athena } from '../../../../server/api/athena';
 import { PAINTSHOP_LOCALE } from '../../shared/locales';
+import { PolygonShape } from '@AthenaServer/extensions/extColshape';
 
 const shops: Array<IPaintShop> = [];
 const inShop = {};
@@ -54,8 +49,8 @@ class InternalFunctions {
 
     static previewPaint(
         player: alt.Player,
-        color: number | RGBA,
-        color2: number | RGBA,
+        color: number | alt.RGBA,
+        color2: number | alt.RGBA,
         finish1: number,
         finish2: number,
         pearl: number = -1,
@@ -75,8 +70,8 @@ class InternalFunctions {
             player.vehicle.primaryColor = finish1;
             player.vehicle.secondaryColor = finish2;
 
-            player.vehicle.customPrimaryColor = color as RGBA;
-            player.vehicle.customSecondaryColor = color2 as RGBA;
+            player.vehicle.customPrimaryColor = color as alt.RGBA;
+            player.vehicle.customSecondaryColor = color2 as alt.RGBA;
 
             if (pearl >= 0) {
                 player.vehicle.pearlColor = pearl;
@@ -95,7 +90,7 @@ export class PaintShopView {
         alt.onClient(Paintshop_View_Events.OPEN, PaintShopView.open);
         alt.onClient(Paintshop_View_Events.PURCHASE, PaintShopView.purchase);
         alt.onClient(Paintshop_View_Events.CLOSE, PaintShopView.close);
-        VehicleEvents.on(ATHENA_EVENTS_VEHICLE.SPAWNED, InternalFunctions.updatePaint);
+        Athena.events.vehicle.on(ATHENA_EVENTS_VEHICLE.SPAWNED, InternalFunctions.updatePaint);
     }
 
     /**
@@ -122,7 +117,7 @@ export class PaintShopView {
      */
     static register(shop: IPaintShop): string {
         if (!shop.uid) {
-            shop.uid = sha256Random(JSON.stringify(shop));
+            shop.uid = Athena.utility.hash.sha256Random(JSON.stringify(shop));
         }
 
         const index = shops.findIndex((x) => x.uid === shop.uid);
@@ -141,7 +136,7 @@ export class PaintShopView {
             uid: `paint-shop-${shop.uid}`,
         });
 
-        const polygon = new PolygonShape(
+        const polygon = new Athena.extensions.PolygonShape(
             shop.vertices[0].z - 2.5,
             shop.vertices[0].z + 2.5,
             shop.vertices,
@@ -169,7 +164,7 @@ export class PaintShopView {
             Athena.player.emit.notification(player, PAINTSHOP_LOCALE.MUST_BE_IN_A_VEHICLE);
             return;
         }
-        
+
         if (!player.vehicle.data || player.vehicle.isTemporary) {
             Athena.player.emit.notification(player, PAINTSHOP_LOCALE.CANNOT_BE_MODIFIED);
             return;
@@ -222,7 +217,7 @@ export class PaintShopView {
             return;
         }
 
-        if (!VehicleFuncs.hasOwnership(player, player.vehicle)) {
+        if (!Athena.vehicle.funcs.hasOwnership(player, player.vehicle)) {
             return;
         }
 
@@ -260,8 +255,8 @@ export class PaintShopView {
      * It takes in a player, the color, color2, finish1, finish2, and pearl and updates the vehicle's
      * color, color2, finish1, finish2, and pearl
      * @param player - alt.Player - The player who is purchasing the vehicle.
-     * @param {RGBA | number} color - The primary color of the vehicle.
-     * @param {RGBA | number} color2 - The second color of the vehicle.
+     * @param {alt.RGBA | number} color - The primary color of the vehicle.
+     * @param {alt.RGBA | number} color2 - The second color of the vehicle.
      * @param {number} finish1 - number
      * @param {number} finish2 - number
      * @param {number} pearl - number
@@ -269,8 +264,8 @@ export class PaintShopView {
      */
     static purchase(
         player: alt.Player,
-        color: RGBA | number,
-        color2: RGBA | number,
+        color: alt.RGBA | number,
+        color2: alt.RGBA | number,
         finish1: number,
         finish2: number,
         pearl: number,
@@ -287,7 +282,7 @@ export class PaintShopView {
             return;
         }
 
-        if (!VehicleFuncs.hasOwnership(player, player.vehicle)) {
+        if (!Athena.vehicle.funcs.hasOwnership(player, player.vehicle)) {
             return;
         }
 
@@ -317,6 +312,6 @@ export class PaintShopView {
         }
 
         InternalFunctions.updatePaint(player.vehicle);
-        VehicleFuncs.save(player.vehicle, player.vehicle.data);
+        Athena.vehicle.funcs.save(player.vehicle, player.vehicle.data);
     }
 }

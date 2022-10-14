@@ -1,5 +1,5 @@
+import * as alt from 'alt-shared';
 import { RGB } from '../../../shared/interfaces/rgb';
-import { Vector3 } from '../../../shared/interfaces/vector';
 
 export interface iPaintshopSync {
     color: number | RGB;
@@ -12,5 +12,5 @@ export interface iPaintshopSync {
 export interface IPaintShop {
     uid: string;
     cost: number;
-    vertices: Array<Vector3>;
+    vertices: Array<alt.IVector3>;
 }
