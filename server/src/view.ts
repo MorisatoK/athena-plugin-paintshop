@@ -1,11 +1,11 @@
 import * as alt from 'alt-server';
-import { ATHENA_EVENTS_VEHICLE } from '../../../../shared/enums/athenaEvents';
+import { ATHENA_EVENTS_VEHICLE } from '@AthenaShared/enums/athenaEvents';
 import { Paintshop_View_Events } from '../../shared/events';
 import { IPaintShop, iPaintshopSync } from '../../shared/interfaces';
 import { VEHICLE_COLOR_PAINTS } from '../../shared/paints';
 import { PAINT_SHOPS } from './shops';
-import { ServerBlipController } from '../../../../server/systems/blip';
-import { Athena } from '../../../../server/api/athena';
+import { ServerBlipController } from '@AthenaServer/systems/blip';
+import { Athena } from '@AthenaServer/api/athena';
 import { PAINTSHOP_LOCALE } from '../../shared/locales';
 import { PolygonShape } from '@AthenaServer/extensions/extColshape';
 

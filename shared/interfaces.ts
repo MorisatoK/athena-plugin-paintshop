@@ -1,5 +1,5 @@
 import * as alt from 'alt-shared';
-import { RGB } from '../../../shared/interfaces/rgb';
+import { RGB } from '@AthenaShared/interfaces/rgb';
 
 export interface iPaintshopSync {
     color: number | RGB;
