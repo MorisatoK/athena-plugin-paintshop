@@ -2,11 +2,11 @@
     <div class="wrapper stack mt-2">
         <div class="stack mb-2 mr-2 mt-2">
             <Module :name="locale.PRIMARY_COLOUR">
-                <ColorSlider class="mr-2" :rgb="data.color" @change="outputPrimaryColor" />
+                <ColorSlider class="mr-2" :rgb="data?.color" @change="outputPrimaryColor" />
             </Module>
             <br />
             <Module :name="locale.SECONDARY_COLOUR">
-                <ColorSlider class="mr-2" :rgb="data.color2" @change="outputSecondaryColor" />
+                <ColorSlider class="mr-2" :rgb="data?.color2" @change="outputSecondaryColor" />
             </Module>
             <br />
             <Module :name="locale.PRIMARY_FINISH">
@@ -99,6 +99,11 @@ export default defineComponent({
     },
     methods: {
         setPearl(e: Event) {
+            if (e.target === null) {
+                console.warn('Could not set pearl.');
+                return;
+            }
+
             const result = e.target['value'];
             this.pearl = parseInt(result);
 
