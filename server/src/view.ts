@@ -293,7 +293,7 @@ export class PaintShopView {
 
         if (color2 !== undefined && color2 !== null) {
             if (!player.vehicle.data.tuning) player.vehicle.data.tuning = {};
-            player.vehicle.data.tuning.secondaryColor = color;
+            player.vehicle.data.tuning.secondaryColor = color2;
         }
 
         if (finish1 !== undefined && finish1 !== null) {
