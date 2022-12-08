@@ -6,5 +6,5 @@ const PLUGIN_NAME = 'Paint Shop Plugin';
 
 PluginSystem.registerPlugin(PLUGIN_NAME, () => {
     PaintShopView.init();
-    alt.log(`~lg~CORE ==> ${PLUGIN_NAME} was Loaded`);
+    alt.log(`~lg~${PLUGIN_NAME} was Loaded`);
 });
